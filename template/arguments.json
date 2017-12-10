@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "admin-username": {
+            "value": "{{admin-username}}"
+        },
+        "script-base": {
+            "value": "{{script-base}}"
+        },
+        "ssh-public-key": {
+            "value": "{{ssh-public-key}}"
+        },
+        "locations": {
+            "value": [
+                "central us",
+                "west us",
+                "east us"
+            ]
+        },
+        "vm-size": {
+            "value": "Standard_DS1_v2"
+        }
+    }
+}

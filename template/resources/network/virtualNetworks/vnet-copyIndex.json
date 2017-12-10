@@ -1,0 +1,38 @@
+{
+    "comments": "",
+    "type": "Microsoft.Network/virtualNetworks",
+    "name": "[concat('vnet-', variables('names')[copyIndex()])]",
+    "apiVersion": "2016-03-30",
+    "copy": {
+        "name": "vnetCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "properties": {
+        "addressSpace": {
+            "addressPrefixes": [
+                "[concat('10.', mul(16, add(copyIndex(), 1)), '.0.0/12')]"
+            ]
+        },
+        "subnets": [
+            {
+                "name": "subnet01",
+                "properties": {
+                    "addressPrefix": "[concat('10.', add(mul(16, add(copyIndex(), 1)), 1), '.0.0/16')]"
+                }
+            },
+            {
+                "name": "subnet02",
+                "properties": {
+                    "addressPrefix": "[concat('10.', add(mul(16, add(copyIndex(), 1)), 2), '.0.0/16')]"
+                }
+            },
+            {
+                "name": "GatewaySubnet",
+                "properties": {
+                    "addressPrefix": "[concat('10.', mul(16, add(copyIndex(), 1)), '.0.', 16,'/28')]"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "comments": "",
+    "type": "Microsoft.Network/networkInterfaces",
+    "apiVersion": "2016-03-30",
+    "name": "[concat('nic-', variables('names')[copyIndex()])]",
+    "copy": {
+        "name": "nicCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "properties": {
+        "ipConfigurations": [
+            {
+                "name": "ifconfig1",
+                "properties": {
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat('pip-', variables('names')[copyIndex()]))]"
+                    },
+                    "subnet": {
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', concat('vnet-', variables('names')[copyIndex()])), '/subnets/subnet01')]"
+                    }
+                }
+            }
+        ],
+        "dnsSettings": {
+            "dnsServers": []
+        },
+        "enableIPForwarding": false,
+        "networkSecurityGroup": {
+            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat('nsg-', variables('names')[copyIndex()]))]"
+        }
+    },
+    "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/pip-', variables('names')[copyIndex()])]",
+        "[concat('Microsoft.Network/virtualNetworks/vnet-', variables('names')[copyIndex()])]",
+        "[concat('Microsoft.Network/networkSecurityGroups/nsg-', variables('names')[copyIndex()])]"
+    ]
+}

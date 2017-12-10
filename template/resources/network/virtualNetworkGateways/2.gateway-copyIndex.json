@@ -1,0 +1,34 @@
+{
+    "comments": "",
+    "type": "Microsoft.Network/virtualNetworkGateways",
+    "name": "[concat('gateway-', variables('names')[copyindex()])]",
+    "copy": {
+        "name": "gatewayCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "apiVersion": "2015-06-15",
+    "properties": {
+        "ipConfigurations": [
+            {
+                "name": "vnetConfig",
+                "properties": {
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat('pip-gateway-', variables('names')[copyindex()]))]"
+                    },
+                    "subnet": {
+                        "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', concat('vnet-', variables('names')[copyIndex()])), '/subnets/GatewaySubnet')]"
+                    }
+                }
+            }
+        ],
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "enableBgp": false
+    },
+    "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', 'pip-gateway-', variables('names')[copyIndex()])]",
+        "[concat('Microsoft.Network/virtualNetworks/', 'vnet-', variables('names')[copyIndex()])]"
+    ]
+}

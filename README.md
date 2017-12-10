@@ -1,0 +1,1 @@
+See [Scenario: Deploy Multi-Region Elasticsearch Cluster on Azure](https://netfxharmonics.com/2016/10/esclusterazure "Scenario: Deploy Multi-Region Elasticsearch Cluster on Azure")

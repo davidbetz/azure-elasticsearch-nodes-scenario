@@ -1,0 +1,14 @@
+{
+    "comments": "",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "apiVersion": "2016-03-30",
+    "name": "[concat('pip-gateway-', variables('names')[copyindex()])]",
+    "copy": {
+        "name": "pipCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+    }
+}

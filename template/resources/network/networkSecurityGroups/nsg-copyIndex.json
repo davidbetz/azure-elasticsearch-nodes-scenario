@@ -1,0 +1,41 @@
+{
+    "comments": "",
+    "type": "Microsoft.Network/networkSecurityGroups",
+    "apiVersion": "2016-03-30",
+    "name": "[concat('nsg-', variables('names')[copyindex()])]",
+    "copy": {
+        "name": "nsgCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "properties": {
+        "securityRules": [
+            {
+                "name": "default-allow-ssh",
+                "properties": {
+                    "protocol": "Tcp",
+                    "sourcePortRange": "*",
+                    "destinationPortRange": "22",
+                    "sourceAddressPrefix": "*",
+                    "destinationAddressPrefix": "*",
+                    "access": "Allow",
+                    "priority": 1000,
+                    "direction": "Inbound"
+                }
+            },
+            {
+                "name": "es",
+                "properties": {
+                    "protocol": "Tcp",
+                    "sourcePortRange": "*",
+                    "destinationPortRange": "9200",
+                    "sourceAddressPrefix": "*",
+                    "destinationAddressPrefix": "*",
+                    "access": "Allow",
+                    "priority": 1100,
+                    "direction": "Inbound"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "sshCommand": {
+        "type": "string",
+        "value": "[concat('ssh ', variables('unique-prefix'), '-admin', variables('names')[0], '.', parameters('locations')[0], '.cloudapp.azure.com')]"
+    }
+}

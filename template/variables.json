@@ -1,0 +1,13 @@
+{
+    "unique-prefix": "[resourceGroup().name]",
+    "storage-prefix": "[concat(variables('unique-prefix'))]",
+    "names": [
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
+        "epsilon",
+        "zeta"
+    ],
+    "ssh-keypath": "[concat('/home/', parameters('admin-username'), '/.ssh/authorized_keys')]"
+}

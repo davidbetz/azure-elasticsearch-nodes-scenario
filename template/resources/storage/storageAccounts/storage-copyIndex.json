@@ -1,0 +1,16 @@
+{
+    "comments": "",
+    "name": "[concat(variables('storage-prefix'), variables('names')[copyIndex()])]",
+    "type": "Microsoft.Storage/storageAccounts",
+    "apiVersion": "2016-01-01",
+    "copy": {
+        "name": "storageCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+    },
+    "kind": "Storage"
+}

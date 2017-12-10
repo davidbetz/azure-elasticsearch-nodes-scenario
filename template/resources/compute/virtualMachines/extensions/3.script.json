@@ -1,0 +1,25 @@
+{
+    "type": "Microsoft.Compute/virtualMachines/extensions",
+    "name": "[concat('vm-', variables('names')[copyindex()], '/script')]",
+    "apiVersion": "2015-05-01-preview",
+    "location": "[parameters('locations')[copyIndex()]]",
+    "copy": {
+        "name": "scriptCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "dependsOn": [
+        "[concat('vm-', variables('names')[copyindex()])]"
+    ],
+    "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+            "fileUris": [
+                "[concat(parameters('script-base'), '/install.sh')]"
+            ],
+            "commandToExecute": "[concat('sh install.sh ', length(parameters('locations')), ' ', parameters('script-base'), ' ', variables('names')[copyindex()])]"
+        }
+    }
+}

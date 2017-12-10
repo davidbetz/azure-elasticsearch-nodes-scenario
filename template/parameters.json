@@ -1,0 +1,17 @@
+{
+    "admin-username": {
+        "type": "string"
+    },
+    "ssh-public-key": {
+        "type": "string"
+    },
+    "script-base": {
+        "type": "string"
+    },
+    "locations": {
+        "type": "array"
+    },
+    "vm-size": {
+        "type": "string"
+    }
+}

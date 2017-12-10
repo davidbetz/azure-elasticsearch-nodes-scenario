@@ -1,0 +1,58 @@
+{
+    "comments": "es node",
+    "type": "Microsoft.Compute/virtualMachines",
+    "apiVersion": "2015-06-15",
+    "name": "[concat('vm-', variables('names')[copyIndex()])]",
+    "copy": {
+        "name": "vmCopy",
+        "count": "[length(parameters('locations'))]"
+    },
+    "location": "[parameters('locations')[copyIndex()]]",
+    "properties": {
+        "hardwareProfile": {
+            "vmSize": "[parameters('vm-size')]"
+        },
+        "storageProfile": {
+            "imageReference": {
+                "publisher": "OpenLogic",
+                "offer": "CentOS",
+                "sku": "7.2",
+                "version": "latest"
+            },
+            "osDisk": {
+                "name": "[concat('vm-', variables('names')[copyIndex()], '-boot')]",
+                "createOption": "FromImage",
+                "vhd": {
+                    "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', concat(variables('storage-prefix'), variables('names')[copyIndex()])), '2015-06-15').primaryEndpoints.blob, 'vhds/', variables('names')[copyIndex()], '-boot.vhd')]"
+                },
+                "caching": "ReadWrite"
+            }
+        },
+        "osProfile": {
+            "computerName": "[variables('names')[copyIndex()]]",
+            "adminUsername": "[parameters('admin-username')]",
+            "linuxConfiguration": {
+                "disablePasswordAuthentication": true,
+                "ssh": {
+                    "publicKeys": [
+                        {
+                            "path": "[variables('ssh-keypath')]",
+                            "keyData": "[parameters('ssh-public-key')]"
+                        }
+                    ]
+                }
+            }
+        },
+        "networkProfile": {
+            "networkInterfaces": [
+                {
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat('nic-', variables('names')[copyIndex()]))]"
+                }
+            ]
+        }
+    },
+    "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('storage-prefix'), variables('names')[copyIndex()]))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', concat('nic-', variables('names')[copyIndex()]))]"
+    ]
+}
